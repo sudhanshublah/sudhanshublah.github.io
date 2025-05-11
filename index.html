@@ -74,15 +74,32 @@
         }
         
         .terminal {
-            width: 80%;
-            max-width: 800px;
-            height: 70%;
+            width: 90%;
+            max-width: 1200px;
+            height: 85%;
             background-color: var(--terminal-bg);
             border-radius: 8px;
             overflow: hidden;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
             display: flex;
             flex-direction: column;
+        }
+        
+        .terminal-content {
+            flex: 1;
+            padding: 15px;
+            overflow-y: auto;
+            font-family: monospace;
+            color: var(--terminal-text);
+            font-size: 16px; /* Increased from 14px */
+            line-height: 1.5;
+        }
+        
+        .menu-item {
+            padding: 8px 15px; /* Increased padding */
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+            font-size: 16px; /* Increased font size */
         }
         
         .terminal-header {
@@ -426,59 +443,90 @@
     </header>
 
     <!-- Sections remain the same -->
-    <section id="about">
+    <section>
         <h2>About Me</h2>
-        <p>DevOps Engineer with expertise in cloud infrastructure, CI/CD pipelines, and containerization.</p>
+        <p>
+            Innovative DevOps & MLOps Engineer passionate about building scalable, secure, and cost-efficient GenAI infrastructures. 
+            Experienced in deploying models using FastAPI, scaling inference with Ray Serve, and automating lifecycles with Vertex AI on cloud platforms like AWS, GCP, and Azure.
+        </p>
     </section>
-    
-    <section id="skills">
+
+    <section>
         <h2>Skills</h2>
         <div class="skills">
             <span class="skill">AWS</span>
+            <span class="skill">GCP</span>
+            <span class="skill">Azure</span>
+            <span class="skill">Jenkins</span>
+            <span class="skill">GitLab</span>
+            <span class="skill">GitHub Actions</span>
+            <span class="skill">Vertex AI</span>
+            <span class="skill">KubeRay</span>
+            <span class="skill">Ray Serve</span>
             <span class="skill">Docker</span>
             <span class="skill">Kubernetes</span>
             <span class="skill">Terraform</span>
-            <span class="skill">CI/CD</span>
+            <span class="skill">Ansible</span>
+            <span class="skill">Prometheus</span>
+            <span class="skill">Grafana</span>
             <span class="skill">Python</span>
-            <span class="skill">Git</span>
-            <span class="skill">Linux</span>
-            <span class="skill">MLOps</span>
+            <span class="skill">Golang</span>
+            <span class="skill">Bash</span>
         </div>
     </section>
-    
-    <section id="projects">
+
+    <section>
         <h2>Projects</h2>
         <div class="project">
-            <h3>Infrastructure as Code</h3>
-            <p>Automated cloud infrastructure deployment using Terraform and AWS CloudFormation.</p>
+            <h3>Scalable GenAI Inference Systems</h3>
+            <p>Designed and deployed Stable Diffusion models using Ray Serve on GKE, enabling fault-tolerant and autoscaled inference architectures. Implemented async processing to optimize system throughput.</p>
         </div>
         <div class="project">
-            <h3>CI/CD Pipeline</h3>
-            <p>Implemented continuous integration and deployment pipelines using Jenkins and GitHub Actions.</p>
+            <h3>Vertex AI Lifecycle Automation</h3>
+            <p>Automated the ML lifecycle including deployment and retraining using Vertex AI pipelines. Integrated monitoring and notification systems to ensure reliability.</p>
+        </div>
+        <div class="project">
+            <h3>High-Performance Inference Optimization</h3>
+            <p>Integrated TensorRT with Triton Inference Server for optimized GPU performance. Reduced model latency significantly and increased concurrent inference throughput.</p>
+        </div>
+        <div class="project">
+            <h3>Cloud Infra & SOC 2 Security Automation</h3>
+            <p>Developed infrastructure-as-code and automation to support SOC 2 Type I readiness. Included alerting, access control, and audit logging pipelines across GCP and AWS.</p>
         </div>
     </section>
-    
-    <section id="experience">
+
+    <section>
         <h2>Experience</h2>
         <div class="experience">
+            <h3>MLOps / DevOps Engineer</h3>
+            <p>Imagine.io, New Delhi | April 2024 – Present</p>
+            <p>Deployed GenAI models using FastAPI and Stable Diffusion in production. Scaled inference pipelines using KubeRay and Ray Serve on GKE. Integrated Triton Inference Server with TensorRT for optimized performance.</p>
+        </div>
+        <div class="experience">
             <h3>DevOps Engineer</h3>
-            <p>Company Name, 2020-Present</p>
-            <p>Managed cloud infrastructure and implemented CI/CD pipelines.</p>
+            <p>Imagine.io, New Delhi | August 2023 – April 2024</p>
+            <p>Rebuilt core infrastructure for scalability and reliability. Designed a cloud-native rendering system with disaster recovery. Built API Gateway integrations and implemented dynamic image processing pipelines.</p>
+        </div>
+        <div class="experience">
+            <h3>DevOps Engineer</h3>
+            <p>Zenarate, Gurgaon | September 2022 – August 2023</p>
+            <p>Developed CI/CD pipelines using Jenkins for AWS and Azure. Integrated AWS WorkSpaces with Azure ADDS. Automated provisioning using Terraform and Ansible.</p>
+        </div>
+        <div class="experience">
+            <h3>Cloud Engineer</h3>
+            <p>To The New, Noida | September 2021 – September 2022</p>
+            <p>Managed AWS migrations and cross-region replication. Implemented GitOps with Argo CD. Built monitoring with Prometheus, Grafana, and CloudWatch.</p>
         </div>
     </section>
-    
-    <section id="education">
+
+    <section>
         <h2>Education</h2>
         <div class="education">
-            <h3>Bachelor of Technology</h3>
-            <p>Computer Science, University Name, 2016-2020</p>
+            <h3>B.Tech in Computer Science & Engineering</h3>
+            <p>IILM College of Engineering and Technology | 2016 – 2020</p>
         </div>
     </section>
-    
-    <footer>
-        <p>© 2024 Sudhanshu Kumar. All rights reserved.</p>
-    </footer>
-    
+
     <footer>
         <p>© 2024 Sudhanshu Kumar. All rights reserved.</p>
     </footer>
