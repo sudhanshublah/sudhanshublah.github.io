@@ -443,7 +443,7 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 // Terminal state management
-let isTerminalVisible = false;
+let isTerminalVisible = true;
 
 // Theme toggle functionality
 const themeToggle = document.querySelector('.theme-toggle');
