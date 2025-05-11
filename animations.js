@@ -2,6 +2,51 @@
 
 // Wait for the DOM to be fully loaded
 document.addEventListener('DOMContentLoaded', () => {
+    // Dark mode functionality
+    const htmlElement = document.documentElement;
+    const themeToggle = document.querySelector('.theme-toggle');
+    const themeIcon = document.querySelector('.theme-toggle-icon');
+    
+    // Function to set theme
+    function setTheme(theme) {
+        htmlElement.setAttribute('data-theme', theme);
+        localStorage.setItem('theme', theme);
+        themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+    }
+    
+    // Check for saved theme preference or use time-based default
+    function getInitialTheme() {
+        const savedTheme = localStorage.getItem('theme');
+        if (savedTheme) {
+            return savedTheme;
+        }
+        
+        // Get current hour in user's timezone
+        const currentHour = new Date().getHours();
+        // Set dark mode between 7 PM (19) and 7 AM (7)
+        return (currentHour >= 19 || currentHour < 7) ? 'dark' : 'light';
+    }
+    
+    // Initialize theme
+    setTheme(getInitialTheme());
+    
+    // Toggle theme when button is clicked
+    themeToggle.addEventListener('click', () => {
+        const currentTheme = htmlElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+        
+        // Add transition animation
+        themeIcon.style.transform = 'rotate(360deg)';
+        
+        // Set the new theme
+        setTheme(newTheme);
+        
+        // Reset rotation after transition
+        setTimeout(() => {
+            themeIcon.style.transform = 'rotate(0)';
+        }, 500);
+    });
+    
     // Page reload animation
     const body = document.querySelector('body');
     body.style.opacity = '0';
@@ -38,10 +83,10 @@ document.addEventListener('DOMContentLoaded', () => {
                 heading.style.transition = 'color 1.5s ease';
                 
                 setTimeout(() => {
-                    heading.style.color = '#0366d6';
+                    heading.style.color = 'var(--link-color)';
                     
                     setTimeout(() => {
-                        heading.style.color = '#333';
+                        heading.style.color = 'var(--heading-color)';
                     }, 1500);
                 }, 300);
             }
@@ -67,13 +112,13 @@ document.addEventListener('DOMContentLoaded', () => {
         
         tag.addEventListener('mouseenter', () => {
             tag.style.transform = 'scale(1.1)';
-            tag.style.backgroundColor = '#e0e0e0';
-            tag.style.boxShadow = '0 2px 5px rgba(0,0,0,0.1)';
+            tag.style.backgroundColor = 'var(--skill-hover)';
+            tag.style.boxShadow = '0 2px 5px var(--card-shadow)';
         });
         
         tag.addEventListener('mouseleave', () => {
             tag.style.transform = 'scale(1)';
-            tag.style.backgroundColor = '#f1f1f1';
+            tag.style.backgroundColor = 'var(--skill-bg)';
             tag.style.boxShadow = 'none';
         });
     });
@@ -90,7 +135,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 
                 // Subtle border color animation
                 setTimeout(() => {
-                    card.style.borderLeft = '3px solid #0366d6';
+                    card.style.borderLeft = '3px solid var(--border-color)';
                     
                     setTimeout(() => {
                         card.style.borderLeft = '3px solid transparent';
@@ -158,7 +203,7 @@ document.addEventListener('DOMContentLoaded', () => {
                         
                         // Subtle border color animation
                         setTimeout(() => {
-                            card.style.borderLeft = '3px solid #0366d6';
+                            card.style.borderLeft = '3px solid var(--border-color)';
                             
                             setTimeout(() => {
                                 card.style.borderLeft = '3px solid transparent';
@@ -171,17 +216,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 sectionHeadings.forEach((heading, index) => {
                     heading.style.opacity = '0';
                     heading.style.transform = 'translateX(-20px)';
-                    heading.style.color = '#333';
+                    heading.style.color = 'var(--heading-color)';
                     
                     setTimeout(() => {
                         heading.style.opacity = '1';
                         heading.style.transform = 'translateX(0)';
                         
                         setTimeout(() => {
-                            heading.style.color = '#0366d6';
+                            heading.style.color = 'var(--link-color)';
                             
                             setTimeout(() => {
-                                heading.style.color = '#333';
+                                heading.style.color = 'var(--heading-color)';
                             }, 1000);
                         }, 300);
                     }, 300 * index + 800);
@@ -202,21 +247,17 @@ document.head.insertAdjacentHTML('beforeend', `
     transform: translateX(0) !important;
 }
 
-body {
-    background-color: #f8f9fa;
-}
-
 .project, .experience, .education {
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.5s ease;
     border-left: 3px solid transparent;
-    background-color: #ffffff;
-    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    background-color: var(--card-bg);
+    box-shadow: 0 1px 3px var(--card-shadow);
 }
 
 .project:hover, .experience:hover, .education:hover {
     transform: translateY(-5px);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    border-left: 3px solid #0366d6;
+    box-shadow: 0 5px 15px var(--card-shadow-hover);
+    border-left: 3px solid var(--border-color);
 }
 
 .profile-img {
@@ -225,7 +266,7 @@ body {
 
 .profile-img:hover {
     transform: scale(1.05);
-    box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+    box-shadow: 0 5px 15px var(--card-shadow-hover);
 }
 
 .social-links a {
@@ -234,7 +275,7 @@ body {
 }
 
 .social-links a:hover {
-    color: #0056b3;
+    color: var(--link-hover);
     transform: translateY(-3px);
 }
 
@@ -250,15 +291,16 @@ body {
 
 .skill {
     transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
-    background-color: #e9ecef;
+    background-color: var(--skill-bg);
 }
 
 .skill:hover {
-    background-color: #dee2e6;
+    background-color: var(--skill-hover);
 }
 
 .refresh-button {
-    background-color: #e9ecef;
+    background-color: var(--button-bg);
+    color: var(--text-color);
     border: none;
     padding: 8px 15px;
     border-radius: 4px;
@@ -269,7 +311,7 @@ body {
 }
 
 .refresh-button:hover {
-    background-color: #dee2e6;
+    background-color: var(--button-hover);
     transform: scale(1.05);
 }
 
@@ -283,7 +325,7 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(3, 102, 214, 0.05);
+    background-color: rgba(var(--border-color), 0.05);
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;
@@ -292,9 +334,9 @@ body {
 
 /* Subtle color pulse animation for skills */
 @keyframes colorPulse {
-    0% { background-color: #e9ecef; }
-    50% { background-color: #cfe2ff; }
-    100% { background-color: #e9ecef; }
+    0% { background-color: var(--skill-bg); }
+    50% { background-color: var(--skill-hover); }
+    100% { background-color: var(--skill-bg); }
 }
 
 /* Apply color pulse to random skills on page load */
@@ -305,7 +347,7 @@ body {
 /* Subtle border animation for sections */
 @keyframes borderPulse {
     0% { border-left-color: transparent; }
-    50% { border-left-color: #0366d6; }
+    50% { border-left-color: var(--border-color); }
     100% { border-left-color: transparent; }
 }
 
@@ -320,8 +362,23 @@ section.pulse {
     animation: borderPulse 4s ease infinite;
 }
 
-section h2 {
-    color: #212529;
+/* Dark mode transition */
+html {
+    transition: background-color 0.5s ease;
+}
+
+/* Theme toggle button animation */
+@keyframes rotate {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.theme-toggle-icon {
+    display: inline-block;
+}
+
+.theme-toggle:hover .theme-toggle-icon {
+    animation: rotate 1s ease;
 }
 </style>
 `);
@@ -348,4 +405,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 4000);
         }, index * 1000);
     });
+    
+    // Check for time-based theme changes every hour
+    setInterval(() => {
+        // Only change theme automatically if user hasn't manually set it
+        if (!localStorage.getItem('theme')) {
+            const currentHour = new Date().getHours();
+            const shouldBeDark = (currentHour >= 19 || currentHour < 7);
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            
+            if ((shouldBeDark && currentTheme !== 'dark') || (!shouldBeDark && currentTheme !== 'light')) {
+                // Smoothly transition to the new theme
+                const newTheme = shouldBeDark ? 'dark' : 'light';
+                document.documentElement.setAttribute('data-theme', newTheme);
+                document.querySelector('.theme-toggle-icon').textContent = newTheme === 'dark' ? '🌙' : '☀️';
+            }
+        }
+    }, 60 * 60 * 1000); // Check every hour
 });
