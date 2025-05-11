@@ -193,7 +193,7 @@ document.addEventListener('DOMContentLoaded', () => {
     footer.appendChild(refreshButton);
 });
 
-// Add CSS for animations directly to the document
+// Update the CSS for animations directly to the document with better background colors
 document.head.insertAdjacentHTML('beforeend', `
 <style>
 .visible {
@@ -202,9 +202,15 @@ document.head.insertAdjacentHTML('beforeend', `
     transform: translateX(0) !important;
 }
 
+body {
+    background-color: #f8f9fa;
+}
+
 .project, .experience, .education {
     transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.5s ease;
     border-left: 3px solid transparent;
+    background-color: #ffffff;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
 }
 
 .project:hover, .experience:hover, .education:hover {
@@ -244,10 +250,15 @@ document.head.insertAdjacentHTML('beforeend', `
 
 .skill {
     transition: transform 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease;
+    background-color: #e9ecef;
+}
+
+.skill:hover {
+    background-color: #dee2e6;
 }
 
 .refresh-button {
-    background-color: #f1f1f1;
+    background-color: #e9ecef;
     border: none;
     padding: 8px 15px;
     border-radius: 4px;
@@ -258,7 +269,7 @@ document.head.insertAdjacentHTML('beforeend', `
 }
 
 .refresh-button:hover {
-    background-color: #e0e0e0;
+    background-color: #dee2e6;
     transform: scale(1.05);
 }
 
@@ -272,7 +283,7 @@ document.head.insertAdjacentHTML('beforeend', `
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(3, 102, 214, 0.1);
+    background-color: rgba(3, 102, 214, 0.05);
     opacity: 0;
     transition: opacity 0.5s ease;
     pointer-events: none;
@@ -281,9 +292,9 @@ document.head.insertAdjacentHTML('beforeend', `
 
 /* Subtle color pulse animation for skills */
 @keyframes colorPulse {
-    0% { background-color: #f1f1f1; }
-    50% { background-color: #e3f2fd; }
-    100% { background-color: #f1f1f1; }
+    0% { background-color: #e9ecef; }
+    50% { background-color: #cfe2ff; }
+    100% { background-color: #e9ecef; }
 }
 
 /* Apply color pulse to random skills on page load */
@@ -302,10 +313,15 @@ section {
     border-left: 3px solid transparent;
     padding-left: 15px;
     margin-left: -18px;
+    background-color: transparent;
 }
 
 section.pulse {
     animation: borderPulse 4s ease infinite;
+}
+
+section h2 {
+    color: #212529;
 }
 </style>
 `);
