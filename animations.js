@@ -12,6 +12,14 @@ document.addEventListener('DOMContentLoaded', () => {
         htmlElement.setAttribute('data-theme', theme);
         localStorage.setItem('theme', theme);
         themeIcon.textContent = theme === 'dark' ? '🌙' : '☀️';
+        
+        // Add 3D rotation effect during theme change
+        document.body.style.transition = 'all 0.5s ease';
+        document.body.style.transform = 'rotateY(5deg)';
+        
+        setTimeout(() => {
+            document.body.style.transform = 'rotateY(0)';
+        }, 500);
     }
     
     // Check for saved theme preference or use time-based default
@@ -35,37 +43,39 @@ document.addEventListener('DOMContentLoaded', () => {
         const currentTheme = htmlElement.getAttribute('data-theme');
         const newTheme = currentTheme === 'light' ? 'dark' : 'light';
         
-        // Add transition animation
-        themeIcon.style.transform = 'rotate(360deg)';
+        // Add 3D transition animation
+        themeIcon.style.transform = 'rotate(360deg) scale(1.2)';
         
         // Set the new theme
         setTheme(newTheme);
         
         // Reset rotation after transition
         setTimeout(() => {
-            themeIcon.style.transform = 'rotate(0)';
+            themeIcon.style.transform = 'rotate(0) scale(1)';
         }, 500);
     });
     
-    // Page reload animation
+    // Page reload animation with 3D effect
     const body = document.querySelector('body');
     body.style.opacity = '0';
-    body.style.transition = 'opacity 0.8s ease';
+    body.style.transform = 'rotateX(5deg)';
+    body.style.transition = 'opacity 0.8s ease, transform 0.8s ease';
     
     setTimeout(() => {
         body.style.opacity = '1';
+        body.style.transform = 'rotateX(0)';
     }, 100);
     
-    // Fade in header elements one by one
+    // Fade in header elements one by one with 3D effects
     const headerElements = document.querySelectorAll('header > *');
     headerElements.forEach((element, index) => {
         element.style.opacity = '0';
-        element.style.transform = 'translateY(20px)';
+        element.style.transform = 'translateY(20px) rotateX(10deg)';
         element.style.transition = 'opacity 0.5s ease, transform 0.5s ease';
         
         setTimeout(() => {
             element.style.opacity = '1';
-            element.style.transform = 'translateY(0)';
+            element.style.transform = 'translateY(0) rotateX(0)';
         }, 300 * index + 300); // Start after body fade-in
     });
     
@@ -158,7 +168,7 @@ document.addEventListener('DOMContentLoaded', () => {
         projectObserver.observe(card);
     });
     
-    // Add refresh/reload animation button
+    // Add refresh/reload animation button with 3D effect
     const footer = document.querySelector('footer');
     const refreshButton = document.createElement('button');
     refreshButton.textContent = '↻ Refresh Animations';
@@ -169,21 +179,29 @@ document.addEventListener('DOMContentLoaded', () => {
         overlay.className = 'reload-overlay';
         document.body.appendChild(overlay);
         
+        // Add 3D rotation to entire page during refresh
+        document.body.style.transition = 'transform 0.5s ease';
+        document.body.style.transformOrigin = 'center';
+        document.body.style.transform = 'rotateY(5deg)';
+        
         // Animate overlay
         setTimeout(() => {
             overlay.style.opacity = '1';
             
             setTimeout(() => {
-                // Reset animations
+                // Reset animations with 3D effects
                 headerElements.forEach((element, index) => {
                     element.style.opacity = '0';
-                    element.style.transform = 'translateY(20px)';
+                    element.style.transform = 'translateY(20px) rotateX(10deg)';
                     
                     setTimeout(() => {
                         element.style.opacity = '1';
-                        element.style.transform = 'translateY(0)';
+                        element.style.transform = 'translateY(0) rotateX(0)';
                     }, 300 * index);
                 });
+                
+                // Reset body transform
+                document.body.style.transform = 'rotateY(0)';
                 
                 // Fade out overlay
                 overlay.style.opacity = '0';
@@ -192,7 +210,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     overlay.remove();
                 }, 500);
                 
-                // Reset project cards
+                // Reset other elements with 3D effects
                 projectCards.forEach((card, index) => {
                     card.style.opacity = '0';
                     card.style.transform = 'translateY(20px)';
