@@ -441,3 +441,139 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }, 60 * 60 * 1000); // Check every hour
 });
+
+// Terminal state management
+let isTerminalVisible = false;
+
+// Theme toggle functionality
+const themeToggle = document.querySelector('.theme-toggle');
+const themeToggleIcon = document.querySelector('.theme-toggle-icon');
+const htmlElement = document.documentElement;
+
+themeToggle.addEventListener('click', () => {
+    const currentTheme = htmlElement.getAttribute('data-theme');
+    const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+    htmlElement.setAttribute('data-theme', newTheme);
+    themeToggleIcon.textContent = newTheme === 'light' ? '☀️' : '🌙';
+});
+
+// Create terminal elements
+const terminalOverlay = document.createElement('div');
+terminalOverlay.className = 'terminal-overlay';
+terminalOverlay.style.display = 'none';
+
+const terminalHTML = `
+    <div class="terminal">
+        <div class="terminal-header">
+            <div class="terminal-buttons">
+                <div class="terminal-button close"></div>
+                <div class="terminal-button minimize"></div>
+                <div class="terminal-button maximize"></div>
+            </div>
+            <div class="terminal-title">sudhanshu@portfolio:~$</div>
+        </div>
+        <div class="terminal-content">
+            <div class="menu-title">Welcome to Sudhanshu's Portfolio Terminal</div>
+            <div class="menu">
+                <div class="menu-item" data-section="about">1. About Me</div>
+                <div class="menu-item" data-section="skills">2. Skills</div>
+                <div class="menu-item" data-section="projects">3. Projects</div>
+                <div class="menu-item" data-section="experience">4. Experience</div>
+                <div class="menu-item" data-section="education">5. Education</div>
+            </div>
+            <div class="command-input">
+                <span>$ </span>
+                <span class="cursor"></span>
+            </div>
+        </div>
+    </div>
+`;
+
+terminalOverlay.innerHTML = terminalHTML;
+document.body.appendChild(terminalOverlay);
+
+// Terminal toggle functionality
+const terminalBtn = document.createElement('button');
+terminalBtn.className = 'nav-btn terminal-btn';
+terminalBtn.textContent = 'Open Terminal';
+
+const portfolioNav = document.createElement('div');
+portfolioNav.className = 'portfolio-nav';
+portfolioNav.appendChild(terminalBtn);
+document.body.appendChild(portfolioNav);
+
+// Terminal visibility toggle
+terminalBtn.addEventListener('click', () => {
+    isTerminalVisible = !isTerminalVisible;
+    terminalOverlay.style.display = isTerminalVisible ? 'flex' : 'none';
+    terminalBtn.textContent = isTerminalVisible ? 'Close Terminal' : 'Open Terminal';
+});
+
+// Close terminal when clicking close button
+const closeButton = terminalOverlay.querySelector('.terminal-button.close');
+closeButton.addEventListener('click', () => {
+    isTerminalVisible = false;
+    terminalOverlay.style.display = 'none';
+    terminalBtn.textContent = 'Open Terminal';
+});
+
+// Section navigation through terminal menu
+const menuItems = terminalOverlay.querySelectorAll('.menu-item');
+menuItems.forEach(item => {
+    item.addEventListener('click', () => {
+        const sectionId = item.getAttribute('data-section');
+        const section = document.querySelector(`section:has(h2:contains("${sectionId}"))`);
+        if (section) {
+            section.scrollIntoView({ behavior: 'smooth' });
+            isTerminalVisible = false;
+            terminalOverlay.style.display = 'none';
+            terminalBtn.textContent = 'Open Terminal';
+        }
+    });
+});
+
+// Add hover effects to elements
+const addHoverEffects = () => {
+    const projects = document.querySelectorAll('.project');
+    const skills = document.querySelectorAll('.skill');
+    const experiences = document.querySelectorAll('.experience');
+    
+    projects.forEach(project => {
+        project.addEventListener('mouseenter', () => {
+            project.style.transform = 'scale(1.02) translateY(-5px) rotateY(2deg)';
+            project.style.boxShadow = '0 10px 20px var(--card-shadow-hover)';
+        });
+        
+        project.addEventListener('mouseleave', () => {
+            project.style.transform = 'none';
+            project.style.boxShadow = '0 1px 3px var(--card-shadow)';
+        });
+    });
+    
+    skills.forEach(skill => {
+        skill.addEventListener('mouseenter', () => {
+            skill.style.transform = 'scale(1.1) rotateY(10deg)';
+            skill.style.backgroundColor = 'var(--skill-hover)';
+        });
+        
+        skill.addEventListener('mouseleave', () => {
+            skill.style.transform = 'none';
+            skill.style.backgroundColor = 'var(--skill-bg)';
+        });
+    });
+    
+    experiences.forEach(experience => {
+        experience.addEventListener('mouseenter', () => {
+            experience.style.transform = 'scale(1.01) translateY(-2px)';
+            experience.style.boxShadow = '0 5px 15px var(--card-shadow-hover)';
+        });
+        
+        experience.addEventListener('mouseleave', () => {
+            experience.style.transform = 'none';
+            experience.style.boxShadow = '0 1px 3px var(--card-shadow)';
+        });
+    });
+};
+
+// Initialize hover effects
+addHoverEffects();
