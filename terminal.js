@@ -1,49 +1,64 @@
 // Terminal-like interface for Sudhanshu Kumar's DevOps Portfolio
 
 document.addEventListener('DOMContentLoaded', () => {
-    // Create terminal overlay
+    // Create terminal overlay with improved opacity and z-index
     const terminalOverlay = document.createElement('div');
     terminalOverlay.className = 'terminal-overlay';
-    terminalOverlay.style.opacity = '1'; // Ensure overlay is visible initially
+    terminalOverlay.style.opacity = '1';
+    terminalOverlay.style.zIndex = '10000'; // Ensure it's on top
     document.body.appendChild(terminalOverlay);
     
-    // Create terminal container
+    // Create terminal container with improved visibility
     const terminal = document.createElement('div');
     terminal.className = 'terminal';
+    terminal.style.width = '90%';
+    terminal.style.maxWidth = '1000px';
+    terminal.style.height = '80vh';
+    terminal.style.backgroundColor = '#1a1a1a'; // Darker background for better contrast
+    terminal.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)'; // More prominent shadow
     terminalOverlay.appendChild(terminal);
     
-    // Terminal header
+    // Terminal header with improved styling
     const terminalHeader = document.createElement('div');
     terminalHeader.className = 'terminal-header';
+    terminalHeader.style.padding = '12px';
+    terminalHeader.style.backgroundColor = '#333333';
     terminalHeader.innerHTML = `
         <div class="terminal-buttons">
-            <span class="terminal-button close"></span>
-            <span class="terminal-button minimize"></span>
-            <span class="terminal-button maximize"></span>
+            <span class="terminal-button close" style="width: 14px; height: 14px; background-color: #ff5f56;"></span>
+            <span class="terminal-button minimize" style="width: 14px; height: 14px; background-color: #ffbd2e;"></span>
+            <span class="terminal-button maximize" style="width: 14px; height: 14px; background-color: #27c93f;"></span>
         </div>
-        <div class="terminal-title">sudhanshu@devops:~</div>
+        <div class="terminal-title" style="color: #f0f0f0; font-size: 16px; font-weight: bold;">sudhanshu@devops:~</div>
     `;
     terminal.appendChild(terminalHeader);
     
-    // Terminal content
+    // Terminal content with improved visibility
     const terminalContent = document.createElement('div');
     terminalContent.className = 'terminal-content';
+    terminalContent.style.padding = '20px';
+    terminalContent.style.color = '#f0f0f0';
+    terminalContent.style.fontSize = '16px';
+    terminalContent.style.lineHeight = '1.6';
+    terminalContent.style.fontFamily = 'Consolas, monospace';
+    terminalContent.style.height = 'calc(100% - 50px)';
+    terminalContent.style.overflowY = 'auto';
     terminal.appendChild(terminalContent);
     
     // Add click event to close button
     const closeButton = terminalHeader.querySelector('.terminal-button.close');
     closeButton.addEventListener('click', exitTerminalMode);
     
-    // Initial loading animation
+    // Initial loading animation with more visible text
     let loadingText = 'Initializing DevOps Portfolio';
     let dots = '';
     let loadingInterval;
     
     function updateLoading() {
         dots = dots.length >= 3 ? '' : dots + '.';
-        terminalContent.innerHTML = `<div class="command-line">$ ${loadingText}${dots}</div>`;
+        terminalContent.innerHTML = `<div class="command-line" style="color: #61dafb; font-size: 18px; margin-bottom: 15px;">$ ${loadingText}${dots}</div>`;
         
-        // Add some "hacker-like" random logs after a few seconds
+        // Add some "hacker-like" random logs with improved visibility
         if (Math.random() > 0.7) {
             const logs = [
                 'Loading Kubernetes configurations...',
@@ -60,6 +75,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const randomLog = logs[Math.floor(Math.random() * logs.length)];
             const logElement = document.createElement('div');
             logElement.className = 'log-line';
+            logElement.style.color = '#8bc34a';
+            logElement.style.marginBottom = '8px';
+            logElement.style.paddingLeft = '20px';
+            logElement.style.fontSize = '14px';
             logElement.textContent = randomLog;
             terminalContent.appendChild(logElement);
         }
@@ -68,13 +87,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // Start loading animation
     loadingInterval = setInterval(updateLoading, 300);
     
-    // After 3 seconds, show "Press any key to continue"
+    // After 3 seconds, show "Press any key to continue" with improved visibility
     setTimeout(() => {
         clearInterval(loadingInterval);
         
         terminalContent.innerHTML += `
-            <div class="command-line success">Portfolio loaded successfully!</div>
-            <div class="prompt">Press any key to continue...</div>
+            <div class="command-line success" style="color: #8bc34a; font-size: 18px; margin-bottom: 20px;">Portfolio loaded successfully!</div>
+            <div class="prompt" style="color: #ff9800; font-size: 20px; margin: 30px 0; text-align: center; font-weight: bold;">Press any key to continue...</div>
         `;
         
         // Listen for keypress
@@ -111,18 +130,34 @@ document.addEventListener('DOMContentLoaded', () => {
         document.removeEventListener('keydown', showPortfolioMenu);
         terminalContent.removeEventListener('click', showPortfolioMenu);
         
-        // Show menu
+        // Show menu with improved styling
         terminalContent.innerHTML = `
-            <div class="command-line">$ ls -la portfolio/</div>
-            <div class="menu-title">DevOps Portfolio - Navigation</div>
-            <div class="menu">
+            <div class="command-line" style="color: #61dafb; font-size: 18px; margin-bottom: 15px;">$ ls -la portfolio/</div>
+            <div class="menu-title" style="color: #ff9800; font-size: 22px; font-weight: bold; margin: 20px 0; text-align: center; border-bottom: 1px solid #555; padding-bottom: 10px;">DevOps Portfolio - Navigation</div>
+            <div class="menu" style="margin: 25px 0;">
                 ${portfolioSections.map((section, index) => 
-                    `<div class="menu-item" data-index="${index}">${index + 1}. ${section.title}</div>`
+                    `<div class="menu-item" data-index="${index}" style="padding: 12px 20px; cursor: pointer; margin-bottom: 10px; border-radius: 5px; transition: all 0.3s ease; font-size: 18px; color: #f0f0f0;">${index + 1}. ${section.title}</div>`
                 ).join('')}
             </div>
-            <div class="prompt">Enter section number (1-${portfolioSections.length}) or 'q' to quit terminal mode:</div>
-            <div class="command-input">$ <span class="cursor">█</span></div>
+            <div class="prompt" style="color: #ff9800; font-size: 18px; margin: 30px 0 15px;">Enter section number (1-${portfolioSections.length}) or 'q' to quit terminal mode:</div>
+            <div class="command-input" style="display: flex; align-items: center; font-size: 18px; color: #f0f0f0;">$ <span class="cursor" style="display: inline-block; width: 10px; height: 20px; background-color: #f0f0f0; margin-left: 5px;">█</span></div>
         `;
+        
+        // Add hover effects to menu items
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('mouseenter', function() {
+                this.style.backgroundColor = 'rgba(97, 218, 251, 0.2)';
+                this.style.transform = 'translateX(10px)';
+                this.style.boxShadow = '0 0 10px rgba(97, 218, 251, 0.3)';
+            });
+            
+            item.addEventListener('mouseleave', function() {
+                this.style.backgroundColor = 'transparent';
+                this.style.transform = 'translateX(0)';
+                this.style.boxShadow = 'none';
+            });
+        });
         
         // Add blinking cursor effect
         const cursor = document.querySelector('.cursor');
@@ -134,7 +169,6 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('keydown', handleMenuSelection);
         
         // Also make menu items clickable
-        const menuItems = document.querySelectorAll('.menu-item');
         menuItems.forEach(item => {
             item.addEventListener('click', function() {
                 const index = parseInt(this.getAttribute('data-index'));
@@ -163,15 +197,41 @@ document.addEventListener('DOMContentLoaded', () => {
         currentSectionIndex = index;
         const section = portfolioSections[index];
         
-        // Show terminal command for this section
+        // Show terminal command for this section with improved visibility
         terminalContent.innerHTML = `
-            <div class="command-line">$ ${section.command}</div>
-            <div class="section-loading">Loading ${section.title}...</div>
+            <div class="command-line" style="color: #61dafb; font-size: 18px; margin-bottom: 20px;">$ ${section.command}</div>
+            <div class="section-loading" style="color: #ff9800; font-size: 20px; text-align: center; margin-top: 40px;">Loading ${section.title}...</div>
         `;
         
-        // Simulate loading
+        // Simulate loading with a more visible progress indicator
+        const progressBar = document.createElement('div');
+        progressBar.style.width = '100%';
+        progressBar.style.height = '4px';
+        progressBar.style.backgroundColor = '#333';
+        progressBar.style.marginTop = '20px';
+        progressBar.style.position = 'relative';
+        progressBar.style.overflow = 'hidden';
+        progressBar.style.borderRadius = '2px';
+        terminalContent.appendChild(progressBar);
+        
+        const progress = document.createElement('div');
+        progress.style.position = 'absolute';
+        progress.style.left = '0';
+        progress.style.top = '0';
+        progress.style.height = '100%';
+        progress.style.width = '0%';
+        progress.style.backgroundColor = '#61dafb';
+        progress.style.transition = 'width 0.8s linear';
+        progressBar.appendChild(progress);
+        
+        // Animate progress bar
         setTimeout(() => {
-            // Hide terminal overlay
+            progress.style.width = '100%';
+        }, 100);
+        
+        // After progress completes, show the section
+        setTimeout(() => {
+            // Hide terminal overlay smoothly
             terminalOverlay.style.opacity = '0';
             terminalOverlay.style.pointerEvents = 'none';
             
@@ -204,15 +264,57 @@ document.addEventListener('DOMContentLoaded', () => {
             existingNav.remove();
         }
         
-        // Create navigation controls
+        // Create navigation controls with improved styling
         const navControls = document.createElement('div');
         navControls.className = 'portfolio-nav';
+        navControls.style.position = 'fixed';
+        navControls.style.bottom = '20px';
+        navControls.style.left = '50%';
+        navControls.style.transform = 'translateX(-50%)';
+        navControls.style.display = 'flex';
+        navControls.style.gap = '15px';
+        navControls.style.zIndex = '1000';
+        
         navControls.innerHTML = `
-            <button class="nav-btn prev-btn" ${currentSectionIndex <= 0 ? 'disabled' : ''}>&lt; Previous</button>
-            <button class="nav-btn terminal-btn">Terminal</button>
-            <button class="nav-btn next-btn" ${currentSectionIndex >= portfolioSections.length - 1 ? 'disabled' : ''}>Next &gt;</button>
+            <button class="nav-btn prev-btn" ${currentSectionIndex <= 0 ? 'disabled' : ''} 
+            style="padding: 10px 20px; border-radius: 5px; border: none; background-color: #343a40; color: #f8f9fa; cursor: pointer; font-weight: bold; transition: all 0.3s ease;">&lt; Previous</button>
+            
+            <button class="nav-btn terminal-btn" 
+            style="padding: 10px 20px; border-radius: 5px; border: none; background-color: #1a1a1a; color: #f0f0f0; cursor: pointer; font-weight: bold; transition: all 0.3s ease;">Terminal</button>
+            
+            <button class="nav-btn next-btn" ${currentSectionIndex >= portfolioSections.length - 1 ? 'disabled' : ''} 
+            style="padding: 10px 20px; border-radius: 5px; border: none; background-color: #343a40; color: #f8f9fa; cursor: pointer; font-weight: bold; transition: all 0.3s ease;">Next &gt;</button>
         `;
         document.body.appendChild(navControls);
+        
+        // Add hover effects to buttons
+        const buttons = navControls.querySelectorAll('.nav-btn:not([disabled])');
+        buttons.forEach(button => {
+            button.addEventListener('mouseenter', function() {
+                if (!this.hasAttribute('disabled')) {
+                    if (this.classList.contains('terminal-btn')) {
+                        this.style.backgroundColor = '#333';
+                        this.style.boxShadow = '0 0 10px rgba(240, 240, 240, 0.3)';
+                    } else {
+                        this.style.backgroundColor = '#495057';
+                        this.style.boxShadow = '0 0 10px rgba(248, 249, 250, 0.3)';
+                    }
+                    this.style.transform = 'translateY(-3px)';
+                }
+            });
+            
+            button.addEventListener('mouseleave', function() {
+                if (!this.hasAttribute('disabled')) {
+                    if (this.classList.contains('terminal-btn')) {
+                        this.style.backgroundColor = '#1a1a1a';
+                    } else {
+                        this.style.backgroundColor = '#343a40';
+                    }
+                    this.style.boxShadow = 'none';
+                    this.style.transform = 'translateY(0)';
+                }
+            });
+        });
         
         // Add event listeners
         document.querySelector('.prev-btn').addEventListener('click', showPreviousSection);
@@ -235,7 +337,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function showTerminal() {
-        // Show terminal overlay
+        // Show terminal overlay with smooth transition
         terminalOverlay.style.opacity = '1';
         terminalOverlay.style.pointerEvents = 'auto';
         
@@ -255,7 +357,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function exitTerminalMode() {
-        // Hide terminal overlay
+        // Hide terminal overlay with smooth transition
         terminalOverlay.style.opacity = '0';
         terminalOverlay.style.pointerEvents = 'none';
         
@@ -280,31 +382,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Add 3D animations specifically for terminal elements
     function addTerminal3DEffects() {
         // Make terminal appear with 3D perspective
-        terminal.style.transform = 'perspective(1000px) rotateX(5deg) scale(0.95)';
-        terminal.style.transition = 'transform 0.3s ease';
+        terminal.style.transform = 'perspective(1000px) rotateX(5deg) scale(0.98)';
+        terminal.style.transition = 'transform 0.3s ease, box-shadow 0.3s ease';
         
         // Add hover effects
         terminal.addEventListener('mouseenter', () => {
             terminal.style.transform = 'perspective(1000px) rotateX(0) scale(1)';
+            terminal.style.boxShadow = '0 15px 40px rgba(0, 0, 0, 0.6)';
         });
         
         terminal.addEventListener('mouseleave', () => {
-            terminal.style.transform = 'perspective(1000px) rotateX(5deg) scale(0.95)';
-        });
-        
-        // Add 3D effects to menu items
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('mouseenter', () => {
-                item.style.transform = 'translateX(5px) scale(1.02)';
-                item.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
-                item.style.boxShadow = '0 0 5px rgba(97, 218, 251, 0.5)';
-            });
-            
-            item.addEventListener('mouseleave', () => {
-                item.style.transform = 'translateX(0) scale(1)';
-                item.style.backgroundColor = 'transparent';
-                item.style.boxShadow = 'none';
-            });
+            terminal.style.transform = 'perspective(1000px) rotateX(5deg) scale(0.98)';
+            terminal.style.boxShadow = '0 10px 30px rgba(0, 0, 0, 0.5)';
         });
     }
     
