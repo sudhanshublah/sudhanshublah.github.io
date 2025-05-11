@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Create terminal overlay
     const terminalOverlay = document.createElement('div');
     terminalOverlay.className = 'terminal-overlay';
+    terminalOverlay.style.opacity = '1'; // Ensure overlay is visible initially
     document.body.appendChild(terminalOverlay);
     
     // Create terminal container
@@ -28,6 +29,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const terminalContent = document.createElement('div');
     terminalContent.className = 'terminal-content';
     terminal.appendChild(terminalContent);
+    
+    // Add click event to close button
+    const closeButton = terminalHeader.querySelector('.terminal-button.close');
+    closeButton.addEventListener('click', exitTerminalMode);
     
     // Initial loading animation
     let loadingText = 'Initializing DevOps Portfolio';
@@ -116,7 +121,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 ).join('')}
             </div>
             <div class="prompt">Enter section number (1-${portfolioSections.length}) or 'q' to quit terminal mode:</div>
-            <div class="command-input"><span class="cursor">█</span></div>
+            <div class="command-input">$ <span class="cursor">█</span></div>
         `;
         
         // Add blinking cursor effect
@@ -129,9 +134,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.addEventListener('keydown', handleMenuSelection);
         
         // Also make menu items clickable
-        document.querySelectorAll('.menu-item').forEach(item => {
-            item.addEventListener('click', () => {
-                const index = parseInt(item.getAttribute('data-index'));
+        const menuItems = document.querySelectorAll('.menu-item');
+        menuItems.forEach(item => {
+            item.addEventListener('click', function() {
+                const index = parseInt(this.getAttribute('data-index'));
                 showSection(index);
             });
         });
@@ -167,6 +173,7 @@ document.addEventListener('DOMContentLoaded', () => {
         setTimeout(() => {
             // Hide terminal overlay
             terminalOverlay.style.opacity = '0';
+            terminalOverlay.style.pointerEvents = 'none';
             
             // Show only the selected section
             sections.forEach(sectionElement => {
@@ -191,26 +198,26 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     function showNavigationControls() {
-        // Create navigation controls if they don't exist
-        if (!document.querySelector('.portfolio-nav')) {
-            const navControls = document.createElement('div');
-            navControls.className = 'portfolio-nav';
-            navControls.innerHTML = `
-                <button class="nav-btn prev-btn" ${currentSectionIndex <= 0 ? 'disabled' : ''}>&lt; Previous</button>
-                <button class="nav-btn terminal-btn">Terminal</button>
-                <button class="nav-btn next-btn" ${currentSectionIndex >= portfolioSections.length - 1 ? 'disabled' : ''}>Next &gt;</button>
-            `;
-            document.body.appendChild(navControls);
-            
-            // Add event listeners
-            document.querySelector('.prev-btn').addEventListener('click', showPreviousSection);
-            document.querySelector('.next-btn').addEventListener('click', showNextSection);
-            document.querySelector('.terminal-btn').addEventListener('click', showTerminal);
-        } else {
-            // Update button states
-            document.querySelector('.prev-btn').disabled = currentSectionIndex <= 0;
-            document.querySelector('.next-btn').disabled = currentSectionIndex >= portfolioSections.length - 1;
+        // Remove existing nav controls if they exist
+        const existingNav = document.querySelector('.portfolio-nav');
+        if (existingNav) {
+            existingNav.remove();
         }
+        
+        // Create navigation controls
+        const navControls = document.createElement('div');
+        navControls.className = 'portfolio-nav';
+        navControls.innerHTML = `
+            <button class="nav-btn prev-btn" ${currentSectionIndex <= 0 ? 'disabled' : ''}>&lt; Previous</button>
+            <button class="nav-btn terminal-btn">Terminal</button>
+            <button class="nav-btn next-btn" ${currentSectionIndex >= portfolioSections.length - 1 ? 'disabled' : ''}>Next &gt;</button>
+        `;
+        document.body.appendChild(navControls);
+        
+        // Add event listeners
+        document.querySelector('.prev-btn').addEventListener('click', showPreviousSection);
+        document.querySelector('.next-btn').addEventListener('click', showNextSection);
+        document.querySelector('.terminal-btn').addEventListener('click', showTerminal);
     }
     
     function showPreviousSection() {
@@ -230,6 +237,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function showTerminal() {
         // Show terminal overlay
         terminalOverlay.style.opacity = '1';
+        terminalOverlay.style.pointerEvents = 'auto';
         
         // Hide all sections
         sections.forEach(section => {
@@ -249,6 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function exitTerminalMode() {
         // Hide terminal overlay
         terminalOverlay.style.opacity = '0';
+        terminalOverlay.style.pointerEvents = 'none';
         
         // Show all sections
         sections.forEach(section => {
@@ -267,4 +276,37 @@ document.addEventListener('DOMContentLoaded', () => {
             navControls.remove();
         }
     }
+    
+    // Add 3D animations specifically for terminal elements
+    function addTerminal3DEffects() {
+        // Make terminal appear with 3D perspective
+        terminal.style.transform = 'perspective(1000px) rotateX(5deg) scale(0.95)';
+        terminal.style.transition = 'transform 0.3s ease';
+        
+        // Add hover effects
+        terminal.addEventListener('mouseenter', () => {
+            terminal.style.transform = 'perspective(1000px) rotateX(0) scale(1)';
+        });
+        
+        terminal.addEventListener('mouseleave', () => {
+            terminal.style.transform = 'perspective(1000px) rotateX(5deg) scale(0.95)';
+        });
+        
+        // Add 3D effects to menu items
+        document.querySelectorAll('.menu-item').forEach(item => {
+            item.addEventListener('mouseenter', () => {
+                item.style.transform = 'translateX(5px) scale(1.02)';
+                item.style.backgroundColor = 'rgba(255, 255, 255, 0.1)';
+                item.style.boxShadow = '0 0 5px rgba(97, 218, 251, 0.5)';
+            });
+            
+            item.addEventListener('mouseleave', () => {
+                item.style.transform = 'translateX(0) scale(1)';
+                item.style.backgroundColor = 'transparent';
+                item.style.boxShadow = 'none';
+            });
+        });
+    }
+    
+    addTerminal3DEffects();
 });
