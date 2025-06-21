@@ -266,7 +266,7 @@ document.head.insertAdjacentHTML('beforeend', `
 }
 
 .project, .experience, .education {
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-left 0.5s ease;
+    transition: transform 0.5s cubic-bezier(0.4,0,0.2,1), box-shadow 0.5s cubic-bezier(0.4,0,0.2,1), border-left 0.5s cubic-bezier(0.4,0,0.2,1);
     border-left: 3px solid transparent;
     background-color: var(--card-bg);
     box-shadow: 0 1px 3px var(--card-shadow);
@@ -279,7 +279,7 @@ document.head.insertAdjacentHTML('beforeend', `
 }
 
 .profile-img {
-    transition: transform 0.5s ease, box-shadow 0.5s ease;
+    transition: transform 0.6s cubic-bezier(0.4,0,0.2,1), box-shadow 0.6s cubic-bezier(0.4,0,0.2,1);
 }
 
 .profile-img:hover {
@@ -398,7 +398,18 @@ html {
 .theme-toggle:hover .theme-toggle-icon {
     animation: rotate 1s ease;
 }
-</style>
+
+/* Pop-in animation for section headings */
+@keyframes popIn {
+    0% { opacity: 0; transform: scale(0.8) translateY(20px);}
+    80% { opacity: 1; transform: scale(1.05) translateY(0);}
+    100% { opacity: 1; transform: scale(1) translateY(0);}
+}
+
+section h2 {
+    opacity: 0;
+    animation: popIn 0.8s cubic-bezier(0.4,0,0.2,1) forwards;
+}
 `);
 
 // Additional script to randomly apply pulse animations to skills
@@ -440,4 +451,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         }
     }, 60 * 60 * 1000); // Check every hour
+
+    // Fade in section headings with pop-in animation
+    document.querySelectorAll('section h2').forEach((heading, i) => {
+        setTimeout(() => {
+            heading.style.opacity = '1';
+            heading.style.animation = 'popIn 0.8s cubic-bezier(0.4,0,0.2,1) forwards';
+        }, 400 + i * 200);
+    });
+});
+
+// Additional global styles
+document.body.style.opacity = '0';
+document.body.style.transition = 'opacity 1s cubic-bezier(0.4,0,0.2,1)';
+window.addEventListener('DOMContentLoaded', () => {
+    setTimeout(() => {
+        document.body.style.opacity = '1';
+    }, 100);
 });

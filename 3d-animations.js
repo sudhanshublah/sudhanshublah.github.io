@@ -63,10 +63,18 @@ document.addEventListener('DOMContentLoaded', () => {
     // Animation loop
     const animate = () => {
         requestAnimationFrame(animate);
-        
+
+        // Add dynamic movement to particles
+        const positions = particlesGeometry.attributes.position.array;
+        const time = Date.now() * 0.001;
+        for (let i = 0; i < particlesCount; i++) {
+            positions[i * 3 + 1] += Math.sin(time + i) * 0.002; // Y axis wave
+        }
+        particlesGeometry.attributes.position.needsUpdate = true;
+
         particlesMesh.rotation.x += 0.0005;
         particlesMesh.rotation.y += 0.0005;
-        
+
         renderer.render(scene, camera);
     };
     
